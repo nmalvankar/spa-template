@@ -17,6 +17,13 @@ objects:
       application: ${APPLICATION_NAME}
     name: ${APPLICATION_NAME}
     namespace: ${NAMESPACE}
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      application: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}-builder
+    namespace: ${NAMESPACE}
 - kind: "BuildConfig"
   apiVersion: "v1"
   metadata:
@@ -65,20 +72,20 @@ objects:
         from:
           kind: ImageStreamTag
           name: ${IMAGE_STREAM_TAG_NAME}
-          namespace: ${IMAGE_STREAM_NAMESPACE}
+          namespace: ${NAMESPACE}
       type: Source
 - apiVersion: v1
   kind: BuildConfig
   metadata:
     labels:
       application: ${APPLICATION_NAME}
-    name: ${APPLICATION_NAME-builder}
+    name: ${APPLICATION_NAME}-builder
     namespace: "${NAMESPACE}"
   spec:
     output:
       to:
         kind: ImageStreamTag
-        name: ${APPLICATION_NAME-builder}:latest
+        name: ${APPLICATION_NAME}-builder:latest
     source:
       type: Git
       git:
@@ -134,14 +141,6 @@ parameters:
   generate: expression
   name: GENERIC_WEBHOOK_SECRET
   required: true
-- description: Namespace in which the ImageStreams for Red Hat Middleware images are
-    installed. These ImageStreams are normally installed in the openshift namespace.
-    You should only need to modify this if you've installed the ImageStreams in a
-    different namespace/project.
-  name: IMAGE_STREAM_NAMESPACE
-  required: true
-  value: openshift
 - description: Image stream tag for the image you'd like to use to build the application
   name: IMAGE_STREAM_TAG_NAME
   required: true
-  value: ${APPLICATION_NAME-builder}:latest
