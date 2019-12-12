@@ -117,7 +117,7 @@ parameters:
 - description: Source code repo for demo app
   name: APPLICATION_SOURCE_REPO
   required: true
-  value: https://github.com/nmalvankar/spring-rest.git
+  value: https://github.com/nmalvankar/proxy-http.git
 - description: Source code branch for demo app
   name: APPLICATION_SOURCE_REF
   value: master
